@@ -146,8 +146,6 @@ function RenderComments({ comments, postComment, dishId }) {
   )
 }
 
-
-
 const DishDetail = (props) => {
   if (props.isLoading) {
     return (
