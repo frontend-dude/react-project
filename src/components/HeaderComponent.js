@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron, Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 
@@ -20,7 +20,7 @@ class Header extends Component {
     });
   }
   toggleModal() {
-    this.setState ({
+    this.setState({
       isModalOpen: !this.state.isModalOpen
     });
   }
@@ -31,13 +31,13 @@ class Header extends Component {
   }
 
   render() {
-    return(
+    return (
       <>
         <Navbar dark expand="md">
           <div className="container">
             <NavbarToggler onClick={this.toggleNav} />
             <NavbarBrand className="mr-auto" href="/">
-              <img src="assets/images/logo.png" height="30" width="41" alt="Restorante Confucsion"/>
+              <img src="assets/images/logo.png" height="30" width="41" alt="Restorante Confucsion" />
             </NavbarBrand>
             <Collapse isOpen={this.state.isNavOpen} navbar>
               <Nav navbar>
@@ -94,9 +94,9 @@ class Header extends Component {
                 <Label htmlFor="password">Password</Label>
                 <Input type="password" id="password" name="password" innerRef={(input) => this.password = input}></Input>
               </FormGroup>
-              <FormGroup check>                
-                <Input type="checkbox" name="remember" innerRef={(input) => this.remember = input}/>
-                  Rememebr me
+              <FormGroup check>
+                <Input type="checkbox" name="remember" innerRef={(input) => this.remember = input} />
+                Rememebr me
               </FormGroup>
               <Button type="submit" value="submit" color="primary">Login Uncontrolled Form</Button>
             </Form>

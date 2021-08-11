@@ -1,47 +1,61 @@
 import React from 'react';
-import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, CardText, Media } from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media, CardTitle, CardText } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
-import { Loading } from "./LoadingComponent";
-import {FadeTransform, Fade, Stagger} from 'react-animation-components';
+import { Fade, Stagger } from 'react-animation-components'
 
 function RenderLeader({ leader }) {
-    return(
-        <div className="col-12 mt-5">
-            <Stagger in>
-                <Fade in>
-                    <Media tag="li">
-                        <Media>
-                            <Media object src={baseUrl + leader.image} alt={leader.name} />
-                        </Media>
-                        <Media body className="ml-5">
-                            <Media heading>{leader.name}</Media>
-                            <CardText>{leader.description}</CardText>
-                        </Media>
-                    </Media>
-                </Fade>
-            </Stagger>
-        </div>
-    );
+    if (leader != null)
+        return (
+            <>
+                {/* Fetching the image from baseUrl (json-server) */}
+                <Media object className="mr-3" src={baseUrl + leader.image} alt={leader.name} height="100em" />
+                <Media body>
+                    <CardTitle className="mt-0">{leader.name}</CardTitle>
+                    <CardText> {leader.abbr}, {leader.designation}</CardText>
+                    <CardText>{leader.description}</CardText>
+                </Media>
+            </>
+        );
+    else
+        return (
+            <div></div>
+        );
 }
 
-function About(props) {
-    const Leaders = () => {
-        if (props.leaderloading) {
-          return <Loading />;
-        } else if (props.leadererr) {
-          return <h4>{props.leadererr}</h4>;
-        } else {
-          const leaders = props.leaders.map((leader) => {
-            return <RenderLeader key={leader.id} leader={leader} />;
-          });
-    
-          return leaders;
-        }
-      };
 
-    return(
-        <FadeTransform in transformProps={{exitTransform: 'scale(0.5) translateY(-50%)'}}>
+const About = (props) => {
+    const LeaderManage = () => {
+        if (props.leaders.isLoading) {
+            return (
+                <Loading />
+            )
+        }
+        else if (props.leaders.errMess) {
+            return (
+                <CardTitle>{props.leaders.errMess}</CardTitle>
+            )
+        }
+        else
+            return (
+                <Media list>
+                    <Stagger in>
+                        {props.leaders.leaders.map((leader) => {
+                            return (
+                                <Fade>
+                                    <div key={leader.id} className="row col-12 mt-3">
+                                        <RenderLeader leader={leader} />
+                                    </div>
+                                </Fade>
+                            );
+                        })}
+                    </Stagger>
+                </Media>
+            )
+    }
+
+    return (
         <div className="container">
             <div className="row">
                 <Breadcrumb>
@@ -49,15 +63,15 @@ function About(props) {
                     <BreadcrumbItem active>About Us</BreadcrumbItem>
                 </Breadcrumb>
                 <div className="col-12">
-                    <h3>About Us</h3>
+                    <CardTitle>About Us</CardTitle>
                     <hr />
-                </div>                
+                </div>
             </div>
             <div className="row row-content">
                 <div className="col-12 col-md-6">
-                    <h2>Our History</h2>
-                    <p>Started in 2010, Ristorante con Fusion quickly established itself as a culinary icon par excellence in Hong Kong. With its unique brand of world fusion cuisine that can be found nowhere else, it enjoys patronage from the A-list clientele in Hong Kong.  Featuring four of the best three-star Michelin chefs in the world, you never know what will arrive on your plate the next time you visit us.</p>
-                    <p>The restaurant traces its humble beginnings to <em>The Frying Pan</em>, a successful chain started by our CEO, Mr. Peter Pan, that featured for the first time the world's best cuisines in a pan.</p>
+                    <CardTitle>Our History</CardTitle>
+                    <CardText>Started in 2010, Ristorante con Fusion quickly established itself as a culinary icon par excellence in Hong Kong. With its unique brand of world fusion cuisine that can be found nowhere else, it enjoys patronage from the A-list clientele in Hong Kong.  Featuring four of the best three-star Michelin chefs in the world, you never know what will arrive on your plate the next time you visit us. </CardText>
+                    <CardText>The restaurant traces its humble beginnings to <em>The Frying Pan</em>, a successful chain started by our CEO, Mr. Peter Pan, that featured for the first time the world's best cuisines in a pan.</CardText>
                 </div>
                 <div className="col-12 col-md-5">
                     <Card>
@@ -80,11 +94,11 @@ function About(props) {
                     <Card>
                         <CardBody className="bg-faded">
                             <blockquote className="blockquote">
-                                <p className="mb-0">You better cut the pizza in four pieces because
-                                    I'm not hungry enough to eat six.</p>
+                                <CardText className="mb-0">You better cut the pizza in four pieces because
+                                    I'm not hungry enough to eat six.</CardText>
                                 <footer className="blockquote-footer">Yogi Berra,
-                                <cite title="Source Title">The Wit and Wisdom of Yogi Berra,
-                                    P. Pepe, Diversion Books, 2014</cite>
+                                    <cite title="Source Title"> The Wit and Wisdom of Yogi Berra,
+                                        P. Pepe, Diversion Books, 2014</cite>
                                 </footer>
                             </blockquote>
                         </CardBody>
@@ -93,17 +107,14 @@ function About(props) {
             </div>
             <div className="row row-content">
                 <div className="col-12">
-                    <h2>Corporate Leadership</h2>
+                    <CardTitle>Corporate Leadership</CardTitle>
                 </div>
                 <div className="col-12">
-                    <Media list>
-                        <Leaders />
-                    </Media>
+                    <LeaderManage />
                 </div>
             </div>
         </div>
-        </FadeTransform>
     );
 }
 
-export default About;    
+export default About;

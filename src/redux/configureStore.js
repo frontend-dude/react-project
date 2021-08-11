@@ -16,7 +16,7 @@ export const ConfigureStore = () => {
             promotions: Promotions,
             leaders: Leaders,
             ...createForms({
-              feedback: InitialFeedback
+                feedback: InitialFeedback
             })
         }),
         applyMiddleware(thunk, logger)
